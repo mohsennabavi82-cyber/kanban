@@ -28,8 +28,8 @@ h1{margin:0;font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:-.5px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .chip{background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:4px 14px;font-size:14px}
 .chip span{color:var(--mute)}
-.board{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1200px;margin:auto;padding:16px 20px 40px}
-.col{background:var(--col);border-radius:20px;padding:12px;min-height:240px;border-top:5px solid var(--cc)}
+.board{direction:ltr;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1200px;margin:auto;padding:16px 20px 40px}
+.col{direction:rtl;background:var(--col);border-radius:20px;padding:12px;min-height:240px;border-top:5px solid var(--cc)}
 .col.over{outline:2px dashed var(--cc)}
 .col h2{margin:4px 6px 12px;font-size:17px;display:flex;justify-content:space-between;align-items:center}
 .col h2 em{font-style:normal;background:var(--cc);color:#fff;border-radius:99px;min-width:26px;text-align:center;font-size:13px;padding:0 8px}
@@ -37,7 +37,7 @@ h1{margin:0;font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:-.5px}
 .card.done .t{text-decoration:line-through;color:var(--mute)}
 .t{font-weight:600}
 .h{font-size:13px;color:var(--k);font-weight:600}
-.mv{display:flex;justify-content:space-between;margin-top:6px}
+.mv{direction:ltr;display:flex;justify-content:space-between;margin-top:6px}
 .mv button{font:inherit;border:0;background:var(--col);color:var(--ink);border-radius:8px;width:34px;height:30px;cursor:pointer}
 .mv button:hover{background:var(--k);color:#fff}
 .mv button:disabled{opacity:.25;cursor:default;background:var(--col);color:var(--ink)}
@@ -120,7 +120,7 @@ function render(){
   items.forEach(function(x){
    var k=CAT[x.c],d=document.createElement("div");d.className="card"+(ci===3?" done":"");d.style.setProperty("--k",k[1]);d.draggable=true;
    d.ondragstart=function(e){e.dataTransfer.setData("text/plain",x.id)};
-   d.innerHTML='<div class="h">'+k[0]+'</div><div class="t">'+x.t+'</div><div class="mv"><button aria-label="مرحله قبل" '+(ci===0?"disabled":"")+'>→</button><button aria-label="مرحله بعد" '+(ci===3?"disabled":"")+'>←</button></div>';
+   d.innerHTML='<div class="h">'+k[0]+'</div><div class="t">'+x.t+'</div><div class="mv"><button aria-label="مرحله قبل" '+(ci===0?"disabled":"")+'>←</button><button aria-label="مرحله بعد" '+(ci===3?"disabled":"")+'>→</button></div>';
    var bt=d.querySelectorAll("button");bt[0].onclick=function(){move(x.id,ci-1)};bt[1].onclick=function(){move(x.id,ci+1)};
    col.appendChild(d)});
   b.appendChild(col)});
