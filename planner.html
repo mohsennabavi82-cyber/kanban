@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" data-theme="dark">
 <head>
 <meta charset="utf-8">
+<meta name="color-scheme" content="dark">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>برنامه هفتگی | محسن نبوی</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap">
@@ -46,7 +47,7 @@ button:focus-visible{outline:3px solid var(--learn);outline-offset:2px}
 .stat{display:none;max-width:1200px;margin:8px auto 0;padding:8px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--line);color:var(--mute)}
 .login{display:none;max-width:380px;margin:24px auto;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px}
 .login h2{margin:0 0 4px}.login input{display:block;width:100%;font:inherit;margin:8px 0;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--col);color:var(--ink)}
-.login .row{display:flex;gap:8px;margin-top:6px}.login button{font:inherit;flex:1;padding:10px;border:0;border-radius:12px;background:var(--learn);color:#fff;cursor:pointer}.login button.alt{background:var(--col);color:var(--ink)}
+.login .row{display:flex;gap:8px;margin-top:6px}.login button{font:inherit;flex:1;padding:10px;border:0;border-radius:12px;background:#e8a33d;color:#1a1204;font-weight:800;cursor:pointer;white-space:nowrap}.login button.alt{background:var(--col);color:var(--ink)}
 .lp{max-width:1200px;margin:auto;padding:28px 20px 0}
 .hero{background:linear-gradient(135deg,#2f6fed,#0e9aa7);color:#fff;border-radius:28px;padding:40px 28px}
 .hero h1{margin:0 0 6px}.hero p{max-width:560px;margin:0 0 16px;font-size:17px}
@@ -67,6 +68,10 @@ button:focus-visible{outline:3px solid var(--learn);outline-offset:2px}
 .col{flex:0 0 82%;scroll-snap-align:center}}
 .hero.big{padding:72px 28px;margin-top:8px}.nav a[aria-current]{background:var(--col)}
 .nav a{white-space:nowrap}@media(max-width:520px){.nav{gap:0;padding-inline:6px;overflow-x:auto}.nav a{padding:6px 11px;font-size:14px}}
+.ico{width:22px;height:22px;vertical-align:-5px;margin-inline-end:6px}
+:root[data-theme="dark"]{--bg:#0b1426;--surface:#111d38;--col:#0f1b33}
+.nav{background:#0b1426;border-color:#1f2e4d}.nav a{color:#c9d6f2}.nav a:hover,.nav a[aria-current]{background:#16233f;color:#fff}
+.sec{border-inline-start:4px solid #e8a33d;padding-inline-start:12px}
 </style>
 </head>
 <body>
@@ -83,9 +88,9 @@ button:focus-visible{outline:3px solid var(--learn);outline-offset:2px}
 </div>
 </header>
 <div id="st" class="stat"></div>
-<div id="login" class="login"><h2>ورود</h2><p class="sub">فقط صاحب برنامه می‌تواند کارت‌ها را ببیند و جابه‌جا کند.</p>
+<div id="login" class="login"><h2>ورود</h2><p class="sub">فقط صاحب برنامه می‌تواند کارت‌ها را ببیند و جابه‌جا کند. بار اول «ساخت حساب» را بزن.</p>
 <input id="em" type="email" dir="ltr" placeholder="ایمیل" autocomplete="username"><input id="pw" type="password" dir="ltr" placeholder="رمز (حداقل ۶ کاراکتر)" autocomplete="current-password">
-<div class="row"><button id="in">ورود</button><button id="up" class="alt">ساخت حساب (بار اول)</button></div></div>
+<div class="row"><button id="in">ورود</button><button id="up" class="alt">ساخت حساب</button></div></div>
 <main class="board" id="board"></main>
 <button class="reset" id="reset">بازنشانی برنامه</button><button class="reset" id="out">خروج</button>
 <script>
@@ -101,8 +106,8 @@ function tok(){var s=getS();if(!s)return Promise.reject("auth");
  if(s.x-60>Date.now()/1000)return Promise.resolve(s.a);
  return fetch(AUTH+"/token?grant_type=refresh_token",{method:"POST",headers:{apikey:KEY,"Content-Type":"application/json"},body:JSON.stringify({refresh_token:s.r})}).then(function(r){if(!r.ok){setS(null);throw "auth"}return r.json()}).then(function(j){setS(j);return j.access_token})}
 function hdr(){return tok().then(function(t){return{apikey:KEY,Authorization:"Bearer "+t,"Content-Type":"application/json"}})}
-function showLogin(m){document.getElementById("login").style.display="block";document.getElementById("board").style.display="none";document.getElementById("out").style.display="none";status(m||"")}
-function showBoard(){document.getElementById("login").style.display="none";document.getElementById("board").style.display="";document.getElementById("out").style.display=""}
+function showLogin(m){document.getElementById("login").style.display="block";document.getElementById("board").style.display="none";document.getElementById("out").style.display="none";document.getElementById("reset").style.display="none";status(m||"")}
+function showBoard(){document.getElementById("login").style.display="none";document.getElementById("board").style.display="";document.getElementById("out").style.display="";document.getElementById("reset").style.display=""}
 function load(){
  status("در حال بارگذاری…");
  return hdr().then(function(h){return fetch(URL_+"?select=id,title,category,col,is_weekly&order=position",{headers:h})}).then(function(r){if(r.status===401||r.status===403){setS(null);throw "auth"}if(!r.ok)throw 0;return r.json()}).then(function(d){
